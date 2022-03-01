@@ -1,0 +1,112 @@
+#+include: "config.org"
+
+* Notation
+#+begin_export latex
+Firstly, define \(N_H\) and \(N_V\) to be the number of hidden and visible units respectively.
+\(H_h\) is a vector of weights for the hidden units, where \(h = 1, 2, \dots, N_H\).
+Similarly, \(V_v\) is a vector of weights for the visible units, where \(v = 1, 2, \dots, N_V\).
+\(W_{h v}\) is a matrix of weights. \(C^{(hv)}_{kl}\) is the coupling matrix between the \(h^{th}\) hidden unit and the \(v^{th}\) visible unit. For simplicity, we will assume that \(C\) is a \(d \times d \) matrix.
+#+end_export
+
+*** Note on the coordination number
+\(n^{(h)}_V\) is the coordination number for visible units of the  \(h^{\text{th}}\) hidden unit. This is the number of connected visible units. Similarly, \(n^{(v)}_H\) is the coordination number for hidden units of the  \(v^{\text{th}}\) visible unit.
+
+Throughout this section, we are operating on the last visible unit (the \({\NV}^{\text{th}}\) unit), which is connected to \(\nH^{(\NV)}\) hidden units. Since it is clear which visible unit we are referring to, the superscript will be omitted.
+
+In the general case, \(\nH = \NH\) as the hidden and visible units form a complete bipartite graph. In the Snake RBM case, each visible unit is connected to exactly one hidden unit so \(\nH = 1 \).
+
+
+#+CAPTION: update this!
+#+ATTR_LATEX: :scale 0.3
+[[/home/frank/shared/quantum/project/quantum_notes.org_20220212_105535_BGk4L0.png]]
+
+
+* Imposing the causality condition on general RBMs
+
+#+ATTR_LATEX: :scale 0.3
+#+CAPTION: update this!
+[[/home/frank/shared/quantum/project/quantum_notes.org_20220222_100137_GUGz4w.png]]
+
+Let \(D_{\ks}\) be the contraction of the red network, and \(\ket{+}\) to be a vector of \(1\)s.
+
+
+If the causality condition were to hold, then,
+#+begin_export latex
+\begin{equation} \label{eqn}
+    D = \underset{\nh}{\bigotimes} \ket{+}.
+\end{equation}
+#+end_export
+
+This is represented visually as
+#+ATTR_LATEX: :scale 0.3
+[[/home/frank/shared/quantum/project/quantum_notes.org_20220222_100226_7SQjLi.png]]
+
+The RHS is then a tensor of \(1\)s. This amounts to an a set of equations where each element of \(D\) must equal \(1\).
+
+*** Preliminary steps
+Let \(P\) be the contraction of the vectorised identity with the copy tensor, and let \(k = \sqrt{d}\).
+The index at which a one appears in the vectorised identity is given by a sequence \(S = (s_1, s_2, \dots, s_k ) \) where \( s_i = k(i - 1) + i \) for \(1 \leq i \leq k\).
+
+
+#+begin_export latex
+\[
+P_{\ls} = \begin{cases}
+  1 & l_1 = l_2 = \dots = l_{\nH} \text{ and } l_1 \in S \\
+  0 & \text{otherwise}
+\end{cases}
+\]
+#+end_export
+
+*** Defining the coupling matrices
+! fix th!
+#+begin_export latex
+\(C^{(hv)}_{kl}\) is a \(d \times d\) coupling matrix between the \(h^\)th hidden and \(v\)th visible unit.
+
+In our notation, we extend \(k\) and \(l\) to range over \([1, d] \), so a more useful definition could be as follows.
+
+\begin{equation}
+C^{(hv)}_{k l} = e^{{W}_{h,v} (k - 1) (l - 1) + \frac{{H}_{h} (k - 1)}{N_H} + \frac{{V}_{v} (l - 1)}{N_V}}
+\end{equation}
+#+end_export
+
+
+*** Solving for elements of the contracted tensor
+
+In fact, we can solve for specific elements of the \(D\) tensor.
+
+#+begin_export latex
+\begin{align}
+D_{\ks} &= \sum_{\ls} P_{\ls} C^{(1,\NV)}_{k_1 l_1} C^{(2,\NV)}_{k_2 l_2} \cdots C^{(\nH,\NV)}_{k_{\nH} l_{\nH}} \\
+  &= \sum_{s \in S} P_{ss \dots s} C^{(1,\NV)}_{k_1 s} C^{(2,\NV)}_{k_2 s} \cdots C^{(\nH,\NV)}_{k_{\nH} s} \\
+  &= \sum_{s \in S} C^{(1,\NV)}_{k_1 s} C^{(2,\NV)}_{k_2 s} \cdots C^{(\nH,\NV)}_{k_{\nH} s} \\
+  &= \sum_{s \in S} \prod_{h=1}^{\nH} C^{(h,\NV)}_{k_h, s} \\
+  &= \sum_{s \in S} \prod_{h=1}^{\nH} e^{{W}_{h,N_{V}} ({k}_{h} - 1 )(s - 1) + \frac{{V}_{N_{V}} (s - 1)}{N_{V}}  + \frac{{H}_{h} ({k}_{h} - 1)}{N_{H}}}
+\end{align}
+#+end_export
+
+* Imposing the causality condition on minimally-connected RBMs
+
+Consider a subset of RBMs that are connected in a minimal way: the
+
+We will call this the /Snake RBM/.
+
+"Snake RBM" has this form.
+
+#+ATTR_LATEX: :scale 0.2
+[[/home/frank/shared/quantum/project/quantum_notes.org_20220219_132339_Pqa5Ov.png]]
+
+
+Solving the Snake RBM amounts to solving the following simplified equation.
+
+#+ATTR_LATEX: :scale 0.3
+[[/home/frank/shared/quantum/project/quantum_notes.org_20220219_132241_ktwlgT.png]]
+#+begin_export latex
+So we continue from Eq. \eqref{correction}, where \(\nh = 1\).
+
+\begin{align}
+D_{\ones} &= \sum_{s \in S} \prod_{h=1}^{\nh} C^{h,\nv}_{1, s} \tag{\ref{correction}} \\
+        &= \sum_{s \in S} e^{ (s -1) \frac{V_{\nv}}{\nv} }
+\end{align}
+#+end_export
+
+According to my code, it seems like in general there are solutions (for \(d \neq 4\)).

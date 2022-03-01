@@ -1,0 +1,52 @@
+% Created 2022-02-28 Mon 11:27
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\usepackage{braket}
+\usepackage{relsize}
+\usepackage{amsmath}
+\newcommand{\kp}{\ket{\psi}}
+\newcommand{\bp}{\bra{\psi}}
+\newcommand{\tr}[1]{\textrm{tr}\left[{#1}\right]}
+\newcommand{\U}{\mathcal{U}}
+\author{Frank Lu}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={Frank Lu},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 27.2 (Org mode 9.5)}, 
+ pdflang={English}}
+\begin{document}
+
+\tableofcontents
+
+% Theoretical results section
+\newcommand{\nH}{n_H}
+\newcommand{\nV}{n_V}
+\newcommand{\NH}{N_H}
+\newcommand{\NV}{N_V}
+
+\newcommand{\as}{a_1a_2 \dots a_{\nh}}
+\newcommand{\ones}{1, 1, \dots, 1}
+\newcommand{\ks}{k_1k_2 \dots k_{\nH}}
+
+\newsavebox{\mybox}
+\newenvironment{Notes}
+{\begin{lrbox}{\mybox}\begin{minipage}{\textwidth}}
+{\end{minipage}\end{lrbox}\fbox{\usebox{\mybox}}\\}
+\end{document}

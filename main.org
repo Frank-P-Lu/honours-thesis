@@ -1,0 +1,8 @@
+#+TITLE: Main
+
+* Quantum Processes
+* Review of the Process Tensor
+* Restricted Boltzmann Machine
+* Theoretical Results
+#+INCLUDE: "theoretical-results.org"
+* Machine Learning Approach

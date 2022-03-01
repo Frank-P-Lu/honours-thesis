@@ -1,0 +1,64 @@
+% Created 2022-02-28 Mon 11:02
+% Intended LaTeX compiler: pdflatex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\author{Frank Lu}
+\date{\today}
+\title{Config}
+\hypersetup{
+ pdfauthor={Frank Lu},
+ pdftitle={Config},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 27.2 (Org mode 9.5)}, 
+ pdflang={English}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+% Theoretical results section
+\newcommand{\nH}{n_H}
+\newcommand{\nV}{n_V}
+\newcommand{\NH}{N_H}
+\newcommand{\NV}{N_V}
+
+\newcommand{\as}{a_1a_2 \dots a_{\nh}}
+\newcommand{\ones}{1, 1, \dots, 1}
+\newcommand{\ks}{k_1k_2 \dots b_{\nh}}
+
+\newsavebox{\mybox}
+\newenvironment{Notes}
+{\begin{lrbox}{\mybox}\begin{minipage}{\textwidth}}
+{\end{minipage}\end{lrbox}\fbox{\usebox{\mybox}}\\}
+
+Hi!
+
+\section{Arguing that RBMs are intrinsically acausal}
+\label{sec:orgec442dd}
+\subsection{Solving for elements of the contracted tensor}
+\label{sec:orgaffba52}
+
+\begin{Notes}
+In fact, we can solve for specific elements of the \(D\) tensor.
+
+\begin{align}
+    &= \sum_{s \in S} \prod_{h=1}^{\nh} C^{h,\nv}_{1, s} \label{correction} \\
+    &= \sum_{s \in S} \prod_{h=1}^{\nh} e^{ (s -1) \frac{V_{\nv}}{\nv} } \\
+    &= \sum_{s \in S} e^{ (s -1) \frac{\nh V_{\nv}}{\nv} }
+\end{align}
+
+\end{Notes}
+\end{document}

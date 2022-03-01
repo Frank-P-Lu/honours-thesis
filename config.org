@@ -1,0 +1,25 @@
+#+LATEX_HEADER: \usepackage{braket}
+#+LATEX_HEADER: \usepackage{relsize}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \newcommand{\kp}{\ket{\psi}}
+#+LATEX_HEADER: \newcommand{\bp}{\bra{\psi}}
+#+LATEX_HEADER: \newcommand{\tr}[1]{\textrm{tr}\left[{#1}\right]}
+#+LATEX_HEADER: \newcommand{\U}{\mathcal{U}}
+#+begin_export latex
+% Theoretical results section
+\newcommand{\th}{\text{th}}
+
+\newcommand{\nH}{n_H}
+\newcommand{\nV}{n_V}
+\newcommand{\NH}{N_H}
+\newcommand{\NV}{N_V}
+
+\newcommand{\ls}{l_1l_2 \dots l_{\nH}}
+\newcommand{\ones}{1, 1, \dots, 1}
+\newcommand{\ks}{k_1k_2 \dots k_{\nH}}
+
+\newsavebox{\mybox}
+\newenvironment{Notes}
+{\begin{lrbox}{\mybox}\begin{minipage}{\textwidth}}
+{\end{minipage}\end{lrbox}\fbox{\usebox{\mybox}}\\}
+#+end_export
