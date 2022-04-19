@@ -1,0 +1,20 @@
+\contentsline {section}{\numberline {1}RBM learning Redux}{1}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Notation}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Part 2: RBM learning}{2}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Simple worked example}{3}{subsubsection.1.2.1}%
+\contentsline {section}{\numberline {2}Burning questions}{4}{section.2}%
+\contentsline {section}{\numberline {3}Very rough notes}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}The RBM itself}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Contrastive Divergence}{5}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Partition Function}{6}{subsubsection.3.2.1}%
+\contentsline {section}{\numberline {4}Machine learning notes}{6}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Finding a good parameterisation}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Mathematical fundamentals}{7}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Understanding: Learning for undirected models}{7}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Partition Functions}{7}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Maximum likelihood}{7}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Contrastive Divergence}{7}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Gibbs Sampling}{7}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Thinking}{7}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Why is it hard to draw from RBMs?}{7}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}What are the common RBM learning algorithms?}{7}{subsection.6.2}%

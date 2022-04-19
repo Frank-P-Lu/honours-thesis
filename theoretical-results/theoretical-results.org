@@ -1,12 +1,9 @@
 #+include: "../config.org"
 
-* Notation
-#+begin_export latex
-Firstly, define \(N_H\) and \(N_V\) to be the number of hidden and visible units respectively.
-\(H_h\) is a vector of weights for the hidden units, where \(h = 1, 2, \dots, N_H\).
-Similarly, \(V_v\) is a vector of weights for the visible units, where \(v = 1, 2, \dots, N_V\).
-\(W_{h v}\) is a matrix of weights. \(C^{(hv)}_{kl}\) is the coupling matrix between the \(h\)th hidden unit and the \(v\)th visible unit. For simplicity, we will assume that \(C\) is a \(d \times d \) matrix.
-#+end_export
+* Notation (Part 2)
+There are additional considerations when using the tensor network representation of the RBM. We will introduce new notation accordingly.
+
+\(C^{(hv)}_{kl}\) is the coupling matrix between the \(h\)th hidden unit and the \(v\)th visible unit. For simplicity, we will assume that \(C\) is a \(d \times d \) matrix.
 
 *** Note on the coordination number
 \(n^{(h)}_V\) is the coordination number for visible units of the  \(h^{\text{th}}\) hidden unit. This is the number of connected visible units. Similarly, \(n^{(v)}_H\) is the coordination number for hidden units of the  \(v^{\text{th}}\) visible unit.
@@ -17,7 +14,6 @@ In the general case, \(\nH = \NH\) as the hidden and visible units form a comple
 
 #+Attr_latex: :scale 0.3
 [[/home/frank/shared/quantum/honours-thesis/theoretical-results/theoretical-results.org_20220301_152814_TaDhUt.png]]
-
 
 * Imposing the causality condition on RBMs
 

@@ -1,11 +1,17 @@
 #+LATEX_HEADER: \usepackage{braket}
 #+LATEX_HEADER: \usepackage{relsize}
 #+LATEX_HEADER: \usepackage{amsmath}
-#+LATEX_HEADER: \newcommand{\kp}{\ket{\psi}}
-#+LATEX_HEADER: \newcommand{\bp}{\bra{\psi}}
-#+LATEX_HEADER: \newcommand{\tr}[1]{\textrm{tr}\left[{#1}\right]}
-#+LATEX_HEADER: \newcommand{\U}{\mathcal{U}}
+
+# Tikz stuff!
+#+LATEX_HEADER: \usepackage{tikz}
+#+LATEX_HEADER: \usetikzlibrary{arrows.meta,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+#+LATEX_HEADER: \usetikzlibrary{decorations.pathreplacing}
+
 #+begin_export latex
+\newcommand{\kp}{\ket{\psi}}
+\newcommand{\bp}{\bra{\psi}}
+\newcommand{\tr}[1]{\textrm{tr}\left[{#1}\right]}
+\newcommand{\U}{\mathcal{U}}
 
 % Boxed environment
 \newsavebox{\mybox}
@@ -24,7 +30,15 @@
 \newcommand{\ones}{1, 1, \dots, 1}
 \newcommand{\ks}{k_1k_2 \dots k_{\nH}}
 
-% Theoretical results section
 \newcommand{\R}{\mathbb{R}}
+
+% RBM learning results section
+
+\newcommand\xv{\mathbf{x}}
+\newcommand\hv{\mathbf{h}}
+\newcommand\vv{\mathbf{v}}
+\newcommand\rbm{\text{RBM}}
+
+
 
 #+end_export
