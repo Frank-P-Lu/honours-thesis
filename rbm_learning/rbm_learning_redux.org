@@ -1,45 +1,45 @@
 #+include: "../config.org"
-#+TITLE: Rbm_learning_redux
+#+TITLE: RBM Learning
 
 * RBM learning Redux
 In this section, we will introduce the Restricted Boltzmann Machine (RBM) in a machine learning context.
 
-An RBM is a generative neural network model, with two layers of nodes -- the hidden and visible layer, comprising of hidden and visible units respectively.
-
+An RBM is a generative neural network model, with two layers of nodes -- the hidden layer and the visible layer.
 A generative model aims to learn a probability distributions, and can also generate samples of their own.
 
-
 In machine learning, they are quite useful for a whole bunch of reasons. * fix this!
+
 Also is interesting from a quantum many-body physics point of view.
+
 
 For instance, Deep belief networks are made from stacked RBMs.
 
 In practice, however, RBMs have been supplanted by other generative models such as Autoencoders and GANs.
 
-- Structure and notation
 
+** Structure and notation
+RBMs contain a hidden and a layer of nodes, with hidden and visible units respectively.
 In graph theoretic terms, the two layers form a bipartite graph where there is an edge between every hidden unit and every visible unit.
-(The word "Restricted" in the name refers to that there are no edges between nodes from the same layer. Boltzmann Machines do not have this restriction.)
+The word "Restricted" in the name refers to that there are no edges between nodes from the same layer. (In contrast, Boltzmann Machines do not have this restriction.)
+
+Consider an RBM with \(N_H\) hidden units and \(N_V\) visible units. There are a corresponding set of weights for the hidden units and visible units.
+We can represent these as vectors, denoted as \(H_h\) for \(h = 1, 2, \dots, N_H\), and \(V_v\) for \(v = 1, 2, \dots, N_V\) respectively.
+There is a weight associated with each edge of the graph. This is represented as a matrix of weights, where \(W_{h v}\) is the weight between the \(h\)th hidden unit and the \(v\)th visible unit. Overall, the weights for an RBM is determined by \( \{H_h, V_h, W_{h v}\}\).
+
+Fig. [[fig:rbm_diagram]] gives an example of an RBM as a diagram.
 
 
 
-** Notation
+#+NAME: fig:rbm_diagram
 #+begin_export latex
-Firstly, define \(N_H\) and \(N_V\) to be the number of hidden and visible units respectively.
-\(H_h\) is a vector of weights for the hidden units, where \(h = 1, 2, \dots, N_H\).
-Similarly, \(V_v\) is a vector of weights for the visible units, where \(v = 1, 2, \dots, N_V\).
-\(W_{h v}\) is a matrix of weights.
-
-#+end_export
-
-#+begin_export latex
-% my beautiful RBM picture!
- \begin{tikzpicture}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
    [
      % $inner sep=2mm,
      hidden/.style={circle,draw=blue!50,fill=blue!20,thick, minimum size=6mm},
     visible/.style={circle,draw=orange!50,fill=orange!20,thick, minimum size=6mm}]
-   % draw hidden
+     % draw hidden
      \foreach \x in {1, ...,  6} {
        \node (h\x) at (\x - 3, 3) [hidden,
                                label={[blue]above:$h_{\x}$}] {};
@@ -64,12 +64,50 @@ Similarly, \(V_v\) is a vector of weights for the visible units, where \(v = 1, 
     \draw [decorate, decoration={brace, mirror, raise=15pt}] (v1.south) --  node [below=16pt] {$V$} (v8.south);
     \draw [decorate, decoration={brace, raise=15pt}] (h1.north) --  node [above=16pt] {$H$} (h6.north);
  \end{tikzpicture}
+\caption{\label{fig:rbm_diagram}A diagram of an RBM with 6 hidden units and 8 visible units.}
+\end{figure}
+#+end_export
 
-(In the machine learning literature, it is common to use \(\mathbf{a}\) and \(\mathbf{b}\)for the hidden and visible unit weights.)
+
+** RBM as a probability distribution
+
+We can consider the RBM as a function on binary strings of length \(N_V\)
+\(
+\rbm: \{0, 1\}^{N_V} \to \mathbb{R}
+\)
+
+\[
+\rbm(\xv) = \sum_{\hv} e^{-E(\xv, \hv)}
+\]
+RBMs are an energy based model that uses an energy function in determining its output.
+
+Here, \(\vv, \hv\) are binary vectors.
+
+
+#+begin_export latex
+\begin{equation}
+E(\vv, \hv) = -\sum_{v = 1}^{N_V} V_v \vv_{v} - \sum_{h = 1}^{N_H} H_h \hv_h - \sum_{v = 1}^{N_V} \sum_{h = 1}^{N_H} \hv_h W_{hv} \vv_v \label{ml:energy}
+\end{equation}
+
+Alternatively, Eq. \eqref{ml:energy} can be written as follows when vectorised.
+
+\begin{equation}
+E(\vv, \hv) = -V^{T}\vv - H^{T}\hv - \hv^T W \vv
+\end{equation}
+
+
+Probability distribution:
+\(
+\Pr(\xv) = \frac{1}{Z} \rbm(\xv)
+\)
+
+\(
+Z = \sum_{\xv} \rbm(X = \xv)
+\)
+(In the machine learning literature, it is common to use \(\mathbf{a}\) and \(\mathbf{b}\) for the hidden and visible unit weights.)
 
 
 
-Alternatively, eq \^ can be written as follows when vectorised.
 
 
 In order for \(\rbm(\xv)\) to be a probability distribution, it needs to be normalised using the partition function \(Z\).
@@ -89,7 +127,7 @@ Training an
 
 *** Simple worked example
 
-We will go through a simple example of an RBM learning a probability distribution.
+We will go through a simple example of a RBM learning a probability distribution.
 Consider the distribution of the sum of two dice rolls. Indeed, this is a binomial distribution.
 
 Fig. [[fig:p1-dice]] is a plot of the samples, drawn from 10000 trials.

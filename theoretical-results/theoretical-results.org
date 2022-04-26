@@ -118,7 +118,7 @@ D_{\ks} &= \sum_{s \in S} \prod_{h=1}^{\nH} C^{(h,\NV)}_{k_h, s} \tag{\ref{d_ten
 #+end_export
 
 
-** Interpreting results for  minimally-connected RBMs
+** Interpreting results for minimally-connected RBMs
 Consider a subset of RBMs that are connected in a minimal way...
 
 We will call this the /Snake RBM/.

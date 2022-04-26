@@ -3,6 +3,7 @@
 #+LATEX_HEADER: \usepackage{amsmath}
 
 # Tikz stuff!
+#+LATEX_HEADER: \usepackage{svg}
 #+LATEX_HEADER: \usepackage{tikz}
 #+LATEX_HEADER: \usetikzlibrary{arrows.meta,decorations.pathmorphing,backgrounds,positioning,fit,petri}
 #+LATEX_HEADER: \usetikzlibrary{decorations.pathreplacing}

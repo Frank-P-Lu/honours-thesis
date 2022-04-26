@@ -1,4 +1,4 @@
-% Created 2022-04-19 Tue 11:20
+% Created 2022-04-19 Tue 16:19
 % Intended LaTeX compiler: pdflatex
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -17,15 +17,16 @@
 \usepackage{braket}
 \usepackage{relsize}
 \usepackage{amsmath}
+\usepackage{svg}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,decorations.pathmorphing,backgrounds,positioning,fit,petri}
 \usetikzlibrary{decorations.pathreplacing}
 \author{Frank Lu}
 \date{\today}
-\title{Rbm\textsubscript{learning}\textsubscript{redux}}
+\title{RBM Learning}
 \hypersetup{
  pdfauthor={Frank Lu},
- pdftitle={Rbm\textsubscript{learning}\textsubscript{redux}},
+ pdftitle={RBM Learning},
  pdfkeywords={},
  pdfsubject={},
  pdfcreator={Emacs 28.1 (Org mode 9.5)}, 
@@ -66,46 +67,45 @@
 \newcommand\vv{\mathbf{v}}
 \newcommand\rbm{\text{RBM}}
 
-
 \section{RBM learning Redux}
-\label{sec:org8b5b42a}
+\label{sec:org224318d}
 In this section, we will introduce the Restricted Boltzmann Machine (RBM) in a machine learning context.
 
-An RBM is a generative neural network model, with two layers of nodes -- the hidden and visible layer, comprising of hidden and visible units respectively.
-
+An RBM is a generative neural network model, with two layers of nodes -- the hidden layer and the visible layer.
 A generative model aims to learn a probability distributions, and can also generate samples of their own.
 
-
 In machine learning, they are quite useful for a whole bunch of reasons. * fix this!
+
 Also is interesting from a quantum many-body physics point of view.
+
 
 For instance, Deep belief networks are made from stacked RBMs.
 
 In practice, however, RBMs have been supplanted by other generative models such as Autoencoders and GANs.
 
-\begin{itemize}
-\item Structure and notation
-\end{itemize}
 
+\subsection{Structure and notation}
+\label{sec:org6219775}
+RBMs contain a hidden and a layer of nodes, with hidden and visible units respectively.
 In graph theoretic terms, the two layers form a bipartite graph where there is an edge between every hidden unit and every visible unit.
-(The word ``Restricted'' in the name refers to that there are no edges between nodes from the same layer. Boltzmann Machines do not have this restriction.)
+The word ``Restricted'' in the name refers to that there are no edges between nodes from the same layer. (In contrast, Boltzmann Machines do not have this restriction.)
+
+Consider an RBM with \(N_H\) hidden units and \(N_V\) visible units. There are a corresponding set of weights for the hidden units and visible units.
+We can represent these as vectors, denoted as \(H_h\) for \(h = 1, 2, \dots, N_H\), and \(V_v\) for \(v = 1, 2, \dots, N_V\) respectively.
+There is a weight associated with each edge of the graph. This is represented as a matrix of weights, where \(W_{h v}\) is the weight between the \(h\)th hidden unit and the \(v\)th visible unit. Overall, the weights for an RBM is determined by \(\{H_h, V_h, W_{h v}\}\).
+
+Fig. \ref{fig:rbm_diagram} gives an example of an RBM as a diagram.
 
 
 
-\subsection{Notation}
-\label{sec:orgccb289d}
-Firstly, define \(N_H\) and \(N_V\) to be the number of hidden and visible units respectively.
-\(H_h\) is a vector of weights for the hidden units, where \(h = 1, 2, \dots, N_H\).
-Similarly, \(V_v\) is a vector of weights for the visible units, where \(v = 1, 2, \dots, N_V\).
-\(W_{h v}\) is a matrix of weights.
-
-% my beautiful RBM picture!
- \begin{tikzpicture}
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
    [
      % $inner sep=2mm,
      hidden/.style={circle,draw=blue!50,fill=blue!20,thick, minimum size=6mm},
     visible/.style={circle,draw=orange!50,fill=orange!20,thick, minimum size=6mm}]
-   % draw hidden
+     % draw hidden
      \foreach \x in {1, ...,  6} {
        \node (h\x) at (\x - 3, 3) [hidden,
                                label={[blue]above:$h_{\x}$}] {};
@@ -130,12 +130,47 @@ Similarly, \(V_v\) is a vector of weights for the visible units, where \(v = 1, 
     \draw [decorate, decoration={brace, mirror, raise=15pt}] (v1.south) --  node [below=16pt] {$V$} (v8.south);
     \draw [decorate, decoration={brace, raise=15pt}] (h1.north) --  node [above=16pt] {$H$} (h6.north);
  \end{tikzpicture}
+\caption{\label{fig:rbm_diagram}A diagram of an RBM with 6 hidden units and 8 visible units.}
+\end{figure}
 
-(In the machine learning literature, it is common to use \(\mathbf{a}\) and \(\mathbf{b}\)for the hidden and visible unit weights.)
+
+\subsection{RBM as a probability distribution}
+\label{sec:org68e304a}
+
+We can consider the RBM as a function on binary strings of length \(N_V\)
+\(\rbm: \{0, 1\}^{N_V} \to \mathbb{R}\)
+
+\[
+\rbm(\xv) = \sum_{\hv} e^{-E(\xv, \hv)}
+\]
+RBMs are an energy based model that uses an energy function in determining its output.
+
+Here, \(\vv, \hv\) are binary vectors.
+
+
+\begin{equation}
+E(\vv, \hv) = -\sum_{v = 1}^{N_V} V_v \vv_{v} - \sum_{h = 1}^{N_H} H_h \hv_h - \sum_{v = 1}^{N_V} \sum_{h = 1}^{N_H} \hv_h W_{hv} \vv_v \label{ml:energy}
+\end{equation}
+
+Alternatively, Eq. \eqref{ml:energy} can be written as follows when vectorised.
+
+\begin{equation}
+E(\vv, \hv) = -V^{T}\vv - H^{T}\hv - \hv^T W \vv
+\end{equation}
+
+
+Probability distribution:
+\(
+\Pr(\xv) = \frac{1}{Z} \rbm(\xv)
+\)
+
+\(
+Z = \sum_{\xv} \rbm(X = \xv)
+\)
+(In the machine learning literature, it is common to use \(\mathbf{a}\) and \(\mathbf{b}\) for the hidden and visible unit weights.)
 
 
 
-Alternatively, eq \^ can be written as follows when vectorised.
 
 
 In order for \(\rbm(\xv)\) to be a probability distribution, it needs to be normalised using the partition function \(Z\).
@@ -144,7 +179,7 @@ In order for \(\rbm(\xv)\) to be a probability distribution, it needs to be norm
 Indeed, RBM 'learning' consists of adjusting the weights \(W, V, H\) to model a probability distribution.
 
 \subsection{Part 2: RBM learning}
-\label{sec:org41541c1}
+\label{sec:org767671e}
 
 Suppose \(p_{data}(\xv)\) is the target distribution we would like our RBM to learn. Then, training requires a list of \(m\) samples \(\mathbb{X} =  [\xv^{(1)}, \xv^{(2)}, \dots, \xv^{(m)}]\) from \(p_{data}(\xv)\).
 
@@ -153,9 +188,9 @@ Training an
 
 
 \subsubsection{Simple worked example}
-\label{sec:orga8b9c3f}
+\label{sec:orgcf63d83}
 
-We will go through a simple example of an RBM learning a probability distribution.
+We will go through a simple example of a RBM learning a probability distribution.
 Consider the distribution of the sum of two dice rolls. Indeed, this is a binomial distribution.
 
 Fig. \ref{fig:p1-dice} is a plot of the samples, drawn from 10000 trials.
@@ -171,7 +206,7 @@ Fig. \ref{fig:p1-dice} is a plot of the samples, drawn from 10000 trials.
 
 
 \section{Burning questions}
-\label{sec:org2900fa3}
+\label{sec:orge2c6c1a}
 \begin{itemize}
 \item Why use the Sigmoid function?
 \begin{figure}[htbp]
@@ -191,11 +226,11 @@ Answer: It's differentiable at non 0 places. Gets infinitely better as it gets c
 \end{itemize}
 
 \section{Very rough notes}
-\label{sec:orgb99592e}
+\label{sec:org5e55b46}
 The family of gradient based leaning algorithms commonly used by RBMs is called \emph{Contrastive Divergence}.
 
 \subsection{The RBM itself}
-\label{sec:org44d53cb}
+\label{sec:orgfcdf7b8}
 Assume your training set of binary images. Then, you can feed your image \(\mathbb{v}\) into the RBM.
 
 \begin{center}
@@ -206,11 +241,11 @@ Your \(\mathbf{h}\) vectors are binary vectors, and the sum is taken over all po
 
 
 \subsection{Contrastive Divergence}
-\label{sec:org64ba6ab}
+\label{sec:org68fbf5e}
 Certain models result in an \emph{unnormalised probability distributions} (page 582, textbook), where the total probability is not 1.
 
 \subsubsection{Partition Function}
-\label{sec:org8317547}
+\label{sec:orgacb1ebe}
 To normalise such a distribution \(\tilde{p}(\mathbf{x})\),
 
 \begin{equation}
@@ -238,7 +273,7 @@ Usually, it is intractable to compute \(Z\) directly, so an approximation is use
 \end{Notes}
 
 \section{Machine learning notes}
-\label{sec:org7ee08dd}
+\label{sec:orgf96dc4d}
 Here, I will briefly give the background for machine learning in the context of RBMs.
 
 Machine learning algorithms are used when it is difficult to directly write an algorithm to do some task. For example, computer vision, or speech recognition.
@@ -252,7 +287,7 @@ We will start with supervised learning, where we have a set \(X = \{x_1, x_2, \d
 \emph{Linear regression} is a good example of a machine learning algorithm.
 
 \subsection{Finding a good parameterisation}
-\label{sec:org86acd44}
+\label{sec:org62e1e7f}
 What is a good choice of \(\theta\)? It only makes sense to ask this question if we can measure the performance of a particular choice of \(\theta\). To this end, let \(C(f, \theta)\) be the cost function that produces a scalar output. So now, the best choice of \(\theta\) is one that optimises \(C\).
 
 A simple and commonly used cost function is the mean squared error, \(C(Y, \hat{Y}) = \sum_i (y_i - \hat{y}_i)^2\).
@@ -260,7 +295,7 @@ A simple and commonly used cost function is the mean squared error, \(C(Y, \hat{
 
 
 \subsection{Mathematical fundamentals}
-\label{sec:orge866d5a}
+\label{sec:orgc973878}
 \emph{From scratch} spends a lot of time talking about calculating gradients to functions.
 
 Suppose, \(f : A \to A\), \(g : (A, A) \to A\). Then, given the map \(Z(x, y) = (f \circ g) (x, y)\), we want to find out how the gradient of the output with respect to the input. More precisely, \(\frac{dZ}{dx}\) and \(\frac{dZ}{dy}\).
@@ -272,26 +307,26 @@ The backward pass is precisely the act of finding gradients with respect to the 
 
 
 \section{Understanding: Learning for undirected models}
-\label{sec:org5adc7a1}
+\label{sec:orge8a0432}
 \subsection{Partition Functions}
-\label{sec:org188fad7}
+\label{sec:orge3c30ad}
 \subsection{Maximum likelihood}
-\label{sec:orgaa26698}
+\label{sec:org3bc2985}
 ``Negative phase is very hard''. So naive algorithm isn't used.
 
 \subsection{Contrastive Divergence}
-\label{sec:org8c0e176}
+\label{sec:org02400d8}
 \subsection{Gibbs Sampling}
-\label{sec:org64e80ce}
+\label{sec:org7870ee8}
 
 
 
 \section{Thinking}
-\label{sec:org1b5f31b}
+\label{sec:org97e97c5}
 \subsection{Why is it hard to draw from RBMs?}
-\label{sec:orgda5347e}
+\label{sec:orgfc49b53}
 \subsection{What are the common RBM learning algorithms?}
-\label{sec:org25c884e}
+\label{sec:org6e60d2c}
 \begin{itemize}
 \item Contrastive Divergence
 \item Stochastic maximum likelihood
